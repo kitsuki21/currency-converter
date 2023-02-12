@@ -1,0 +1,49 @@
+.block {
+  box-sizing: border-box;
+  max-width: 300px;
+  background: white;
+  padding: 16px;
+  position: relative;
+}
+
+.elem-block {
+  display: flex;
+  align-items: center;
+}
+
+.list-currency {
+  width: 270px;
+  padding: 0;
+  list-style: none;
+  display: flex;
+  flex-direction: row;
+}
+
+li {
+  border-radius: 10px;
+  width: 60px;
+  text-align: center;
+  cursor: pointer;
+}
+
+.curency-active {
+  background: rgb(43, 191, 124);
+}
+
+.btn-arrow {
+  width: 16px;
+  height: 16px;
+  cursor: pointer;
+}
+
+.btn-arrow-active {
+  transform: rotate(180deg);
+}
+
+input {
+  padding: 16px;
+  font-size: 24px;
+  width: 100%;
+  font-weight: 700;
+  box-sizing: border-box;
+}
