@@ -1,14 +1,13 @@
-import React, { useEffect, useRef, useState } from "react";
+import React, { useEffect, useState } from "react";
 import "./App.css";
 import Block from "./Componets/Block";
 
 function App() {
-  const [fromCurrency, setFromCurrency] = useState("RUB");
-  const [toCurrency, setToCurrency] = useState("USD");
+  const [fromCurrency, setFromCurrency] = useState(0);
+  const [toCurrency, setToCurrency] = useState(1);
   const [fromPrice, setFromPrice] = useState(0);
   const [toPrice, setToPrice] = useState(1);
-
-  const dataRef = useRef({});
+  const [listCurrensy, setListCurrensy] = useState([]);
 
   useEffect(() => {
     fetch(
@@ -16,23 +15,38 @@ function App() {
     )
       .then((res) => res.json())
       .then((json) => {
-        dataRef.current = json.data;
+        setListCurrensy(Object.entries(json.data));
+        console.log(Object.entries(json.data));
+        console.log(json.data);
+
         onChangeToPrice(1);
       });
   }, []);
 
+  const handleClickListItem = (index) => {
+    const filterListCurrency = listCurrensy.filter((elem, id) => id !== index);
+    filterListCurrency.unshift(listCurrensy[index]);
+    setListCurrensy(filterListCurrency);
+    setToCurrency(0);
+  };
+
   function onChangeFromPrice(value) {
-    const price = value / dataRef.current[fromCurrency];
-    const result = price * dataRef.current[toCurrency];
-    setToPrice(result.toFixed(3));
-    setFromPrice(value);
+    if (listCurrensy.length) {
+      const price = value / listCurrensy[fromCurrency][1];
+      const result = price * listCurrensy[toCurrency][1];
+      setToPrice(result.toFixed(3));
+      console.log(value, price, result);
+      setFromPrice(value);
+    }
   }
 
   function onChangeToPrice(value) {
-    const result =
-      (dataRef.current[fromCurrency] / dataRef.current[toCurrency]) * value;
-    setFromPrice(result.toFixed(3));
-    setToPrice(value);
+    if (listCurrensy.length) {
+      const result =
+        (listCurrensy[fromCurrency][1] / listCurrensy[toCurrency][1]) * value;
+      setFromPrice(result.toFixed(3));
+      setToPrice(value);
+    }
   }
 
   useEffect(() => {
@@ -50,13 +64,16 @@ function App() {
         currency={fromCurrency}
         onChangeCurrency={setFromCurrency}
         onChangeValue={onChangeFromPrice}
-        dataRef={dataRef.current}
+        listCurrensy={listCurrensy}
+        handleClickListItem={handleClickListItem}
       />
       <Block
         value={toPrice}
         currency={toCurrency}
         onChangeCurrency={setToCurrency}
         onChangeValue={onChangeToPrice}
+        listCurrensy={listCurrensy}
+        handleClickListItem={handleClickListItem}
       />
     </div>
   );

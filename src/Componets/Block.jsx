@@ -8,11 +8,13 @@ const Block = ({
   onChangeValue,
   currency,
   onChangeCurrency,
-  dataRef,
+  listCurrensy,
+  handleClickListItem,
 }) => {
   const [show, setShow] = useState(false);
-  const defaultCurrencyes = ["RUB", "USD", "EUR", "GBP"];
+  // const defaultCurrencyes = ["RUB", "USD", "EUR", "GBP"];
 
+  const defaultCurrencyes = listCurrensy.slice(0, 4);
   const handleClick = () => {
     setShow((prev) => !prev);
   };
@@ -21,13 +23,13 @@ const Block = ({
     <div className="block">
       <div className="elem-block">
         <ul className="list-currency">
-          {defaultCurrencyes.map((cur) => (
+          {defaultCurrencyes.map(([title], index) => (
             <li
-              onClick={() => onChangeCurrency(cur)}
-              className={currency === cur ? "curency-active" : ""}
-              key={cur}
+              onClick={() => onChangeCurrency(index)}
+              className={currency === index ? "curency-active" : ""}
+              key={title}
             >
-              {cur}
+              {title}
             </li>
           ))}
         </ul>
@@ -45,7 +47,12 @@ const Block = ({
         type="number"
         placeholder={0}
       />
-      {show && <ListCurrency dataRef={dataRef} />}
+      {show && (
+        <ListCurrency
+          listCurrensy={listCurrensy.slice(4)}
+          handleClickListItem={handleClickListItem}
+        />
+      )}
     </div>
   );
 };

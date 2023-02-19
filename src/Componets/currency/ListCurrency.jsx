@@ -1,16 +1,18 @@
 import React from "react";
 import cl from "./ListCurrency.module.css";
 
-const ListCurrency = ({ dataRef }) => {
-  const currency = [];
-  for (let key in dataRef) {
-    currency.push(key);
-  }
+const ListCurrency = ({ listCurrensy, handleClickListItem }) => {
   return (
     <div className={cl.wrapper}>
       <ul className={cl.listCurrency}>
-        {currency.map((cur) => (
-          <li className={cl.listCurrencyElem}>{cur}</li>
+        {listCurrensy.map(([title], index) => (
+          <li
+            onClick={() => handleClickListItem(index + 4)}
+            className={cl.listCurrencyElem}
+            key={title}
+          >
+            {title}
+          </li>
         ))}
       </ul>
     </div>
